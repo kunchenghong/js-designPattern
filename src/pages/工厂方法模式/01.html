@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+//   let UserFactory = function(role){
+//     if(this instanceof UserFactory){
+//       var s = new this[role]();
+//       return s;
+//     }else{
+//       return new UserFactory(role)
+//     }
+//   }
+//   UserFactory.prototype = {
+//   SuperAdmin: function() {
+//     this.name = "超级管理员",
+//     this.viewPage = ['首页', '通讯录', '发现页', '应用数据', '权限管理']
+//   },
+//   Admin: function() {
+//     this.name = "管理员",
+//     this.viewPage = ['首页', '通讯录', '发现页', '应用数据']
+//   },
+//   NormalUser: function() {
+//     this.name = '普通用户',
+//     this.viewPage = ['首页', '通讯录', '发现页']
+//   }
+// }
+// //调用
+// let superAdmin = UserFactory('SuperAdmin');
+// let admin = UserFactory('Admin') 
+// let normalUser = UserFactory('NormalUser')
+// let superAdmin11 = new UserFactory('SuperAdmin');
+
+class User {
+  constructor(name = '', viewPage = []) {
+    if(new.target === User) {
+      throw new Error('抽象类不能实例化!');
+    }
+    this.name = name;
+    this.viewPage = viewPage;
+  }
+}
+
+class UserFactory extends User {
+  constructor(name, viewPage) {
+    super(name, viewPage)
+  }
+  create(role) {
+    switch (role) {
+      case 'superAdmin': 
+        return new UserFactory( '超级管理员', ['首页', '通讯录', '发现页', '应用数据', '权限管理'] );
+        break;
+      case 'admin':
+        return new UserFactory( '普通用户', ['首页', '通讯录', '发现页'] );
+        break;
+      case 'user':
+        return new UserFactory( '普通用户', ['首页', '通讯录', '发现页'] );
+        break;
+      default:
+        throw new Error('参数错误, 可选参数:superAdmin、admin、user')
+    }
+  }
+}
+
+let userFactory = new UserFactory();
+let superAdmin = userFactory.create('superAdmin');
+let admin = userFactory.create('admin');
+let user = userFactory.create('user');
+console.log('superAdmin', superAdmin)
+console.log('admin', admin)
+console.log('user', user)
+
+//js抽象工厂模式详解  js中简单工厂模式经典代码和经典用处 能帮我设计一个使用js简单工厂模式的场景吗？然后帮我提供一下解决方案
+
+</script>
+</html>

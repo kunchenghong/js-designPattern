@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  //简单工厂模式又叫静态工厂模式，由一个工厂对象决定创建某一种产品对象类的实例。主要用来创建同一类对象。
+  //在实际的项目中，我们常常需要根据用户的权限来渲染不同的页面，高级权限的用户所拥有的页面有些是无法被低级权限的用户所查看。所以我们可以在不同权限等级用户的构造函数中，保存该用户能够看到的页面。在根据权限实例化用户。代码如下
+  let UserFactory = function (role) {
+  function User (name, viewPage) {
+    this.name = name;
+    this.viewPage = viewPage;
+  }
+  switch (role) {
+    case 'superAdmin':
+      return new User('superAdmin', ['首页', '通讯录', '发现页', '应用数据', '权限管理']);
+      break;
+    case 'admin':
+      return new User('admin', ['首页', '通讯录', '发现页', '应用数据']);
+      break;
+    case 'user':
+      return new User('user', ['首页', '通讯录', '发现页']);
+      break;
+    default:
+      throw new Error('参数错误, 可选参数:superAdmin、admin、user');
+  }
+}
+//调用
+let superAdmin = UserFactory('superAdmin');
+let admin = UserFactory('admin') 
+let normalUser = UserFactory('user')
+console.log('superAdmin', superAdmin)
+console.log('admin', admin)
+console.log('normalUser', normalUser)
+//简单工厂的优点在于，你只需要一个正确的参数，就可以获取到你所需要的对象，而无需知道其创建的具体细节。但是在函数内包含了所有对象的创建逻辑（构造函数）和判断逻辑的代码，每增加新的构造函数还需要修改判断逻辑代码。当我们的对象不是上面的3个而是30个或更多时，这个函数会成为一个庞大的超级函数，便得难以维护。所以，简单工厂只能作用于创建的对象数量较少，对象的创建逻辑不复杂时使用。
+</script>
+</html>

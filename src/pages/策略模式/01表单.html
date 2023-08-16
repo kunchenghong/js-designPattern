@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  // 策略对象
+const strategies = {
+  isNonEmpty: value => value.trim() !== '',
+  isValidEmail: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+  isValidPhone: value => /^\d{10}$/.test(value)
+};
+
+// 表单验证类
+class Validator {
+  constructor() {
+    this.validationStrategies = {};
+  }
+
+  addValidation(field, strategy) {
+    this.validationStrategies[field] = strategy;
+  }
+
+  validate(data) {
+    for (const field in data) {
+      if (data.hasOwnProperty(field)) {
+        const strategy = this.validationStrategies[field];
+        const value = data[field];
+
+        if (strategy && !strategy(value)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+}
+
+// 使用
+const validator = new Validator();
+validator.addValidation('username', strategies.isNonEmpty);
+validator.addValidation('email', strategies.isValidEmail);
+
+const formData = {
+  username: 'john_doe',
+  email: 'john.doe@example.com'
+};
+
+if (validator.validate(formData)) {
+  console.log('表单数据验证通过！');
+} else {
+  console.log('表单数据验证失败。');
+}
+
+</script>
+</html>

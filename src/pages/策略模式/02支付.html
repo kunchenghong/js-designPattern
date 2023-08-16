@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  const promotions = {
+    discount: (price, percentage) => price * (1 - percentage),
+    fullReduction: (price, threshold, reduction) => price >= threshold ? price - reduction : price,
+    buyOneGetOne: (price, quantity) => Math.floor(quantity / 2) * price
+  };
+
+  class ShoppingCart {
+    constructor(promotionStrategy) {
+      this.items = [];
+      this.promotionStrategy = promotionStrategy;
+    }
+
+    addItem(item) {
+      this.items.push(item);
+    }
+
+    calculateTotal() {
+      const totalPrice = this.items.reduce((total, item) => total + item.price * item.quantity, 0);
+      return this.promotionStrategy(totalPrice, this.items);
+    }
+  }
+
+  // 使用不同的促销策略来创建购物车
+  const discountCart = new ShoppingCart(promotions.discount);
+  const fullReductionCart = new ShoppingCart(promotions.fullReduction);
+  const buyOneGetOneCart = new ShoppingCart(promotions.buyOneGetOne);
+
+  // 添加商品到购物车
+  discountCart.addItem({ price: 10, quantity: 2 });
+  fullReductionCart.addItem({ price: 20, quantity: 1 });
+  buyOneGetOneCart.addItem({ price: 5, quantity: 3 });
+
+  // 计算总价
+  console.log("折扣价格:", discountCart.calculateTotal()); // 输出: 18
+  console.log("满减价格:", fullReductionCart.calculateTotal()); // 输出: 20
+  console.log("买一送一价格:", buyOneGetOneCart.calculateTotal()); // 输出: 10
+
+</script>
+
+</html>

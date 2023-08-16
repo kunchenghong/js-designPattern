@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  class Light {
+    turnOn() {
+      return "Light is on";
+    }
+
+    turnOff() {
+      return "Light is off";
+    }
+  }
+
+  class LightOnCommand {
+    constructor(light) {
+      this.light = light;
+    }
+
+    execute() {
+      return this.light.turnOn();
+    }
+  }
+
+  class LightOffCommand {
+    constructor(light) {
+      this.light = light;
+    }
+
+    execute() {
+      return this.light.turnOff();
+    }
+  }
+
+  class RemoteControl {
+    constructor() {
+      this.command = null;
+    }
+
+    setCommand(command) {
+      this.command = command;
+    }
+
+    pressButton() {
+      return this.command.execute();
+    }
+  }
+
+  const light = new Light();
+  const lightOnCommand = new LightOnCommand(light);
+  const lightOffCommand = new LightOffCommand(light);
+
+  const remote = new RemoteControl();
+
+  remote.setCommand(lightOnCommand);
+  console.log(remote.pressButton()); // 输出："Light is on"
+
+  remote.setCommand(lightOffCommand);
+  console.log(remote.pressButton()); // 输出："Light is off"
+
+</script>
+
+</html>
